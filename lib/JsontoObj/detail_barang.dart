@@ -24,32 +24,3 @@ class DetailBarang {
     );
   }
 }
-
-String getKode_barang = "";
-
-Future _scanDetailBarang() async {
-  getKode_barang = await FlutterBarcodeScanner.scanBarcode(
-      "#fce303", "Batal", true, ScanMode.DEFAULT);
-}
-
-Future<DetailBarang> scanDetailBarangRes(String getKode_barang) async {
-  final response = await http.post(
-    Uri.parse('http://192.168.1.8:8000/api/detail'),
-    headers: <String, String>{
-      'Accept': 'application/json',
-    },
-    body: jsonEncode(<String, String>{
-      'kode_barang': getKode_barang,
-    }),
-  );
-
-  if (response.statusCode == 201) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    return DetailBarang.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
-    throw Exception('Barang tidak terdaftar');
-  }
-}
