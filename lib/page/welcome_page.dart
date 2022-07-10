@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:androidbarcode/JsontoObj/detail_barang.dart';
 import 'package:androidbarcode/page/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class HomePageWidget extends StatefulWidget {
   // const HomePageWidget({Key key}) : super(key: key);
@@ -13,6 +16,34 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  // Fungsi Scan
+  String getKode_barang = "";
+  Future _scanDetailBarang() async {
+    getKode_barang = await FlutterBarcodeScanner.scanBarcode(
+        "#fce303", "Batal", true, ScanMode.DEFAULT);
+  }
+
+  // Hasil scan
+  Future<DetailBarang> scanDetailBarangRes(String getKode_barang) async {
+    final response = await http.post(
+      Uri.parse('http://192.168.1.8:8000/api/detail'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'kode_barang': getKode_barang,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return DetailBarang.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Barang tidak terdaftar');
+    }
+  }
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -103,7 +134,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   BorderRadius.all(Radius.circular(8.0))),
                           onPressed: () {
                             // Scan Barcode
-                            scanDetailBarang(getKode_barang);
+                            _scanDetailBarang();
                           },
                           child: Text(
                             'Scan Barcode',
@@ -153,7 +184,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ],
                   ),
                 ),
-                Text(getKode_barang)
               ],
             ),
           ),
