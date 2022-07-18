@@ -5,6 +5,7 @@ void main() {
   runApp(MyApp());
 }
 
+// ignore: use_key_in_widget_constructors
 class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
