@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:androidbarcode/page/dashboard_page.dart';
+import 'package:androidbarcode/widgets/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:androidbarcode/page/welcome_page.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: GestureDetector(
@@ -123,15 +124,14 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         labelText: 'Masukkan Email',
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2,
-                              color: Color.fromARGB(255, 28, 99, 183)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: mainColor,
+                          ),
                           borderRadius: BorderRadius.circular(9),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2,
-                              color: Color.fromARGB(255, 28, 99, 183)),
+                          borderSide: BorderSide(width: 2, color: mainColor),
                           borderRadius: BorderRadius.circular(9),
                         ),
                       ),
@@ -151,15 +151,11 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         labelText: 'Masukkan Password',
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2,
-                              color: Color.fromARGB(255, 28, 99, 183)),
+                          borderSide: BorderSide(width: 2, color: mainColor),
                           borderRadius: BorderRadius.circular(9),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2,
-                              color: Color.fromARGB(255, 28, 99, 183)),
+                          borderSide: BorderSide(width: 2, color: mainColor),
                           borderRadius: BorderRadius.circular(9),
                         ),
                       ),
@@ -173,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: ButtonTheme(
                     minWidth: 150,
                     child: RaisedButton(
-                      color: Color.fromARGB(255, 30, 99, 183),
+                      color: mainColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0))),
                       child: Text(
@@ -252,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     final response = await http.post(
-      Uri.parse("http://192.168.1.8:8000/api/login"),
+      Uri.parse("https://asdpbarcodeinventory.herokuapp.com/api/login"),
       body: {
         'email': email.text,
         'password': password.text,
@@ -261,28 +257,29 @@ class _LoginPageState extends State<LoginPage> {
     );
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      print("Login Token :" + body["access_token"]);
+      // print("Login Token :" + body["access_token"]);
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setString("login", body["access_token"]);
+      await preferences.setString("login", body["name"]);
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Dashboard(),
           ));
-      // Alert(
-      //     context: context,
-      //     title: "Login Berhasil",
-      //     type: AlertType.success,
-      //     buttons: [
-      //       DialogButton(
-      //         child: Text(
-      //           "Ok",
-      //           style: TextStyle(color: Colors.white, fontSize: 20),
-      //         ),
-      //         onPressed: () => Navigator.pop(context),
-      //         width: 120,
-      //       )
-      //     ]).show();
+    } else if (response.statusCode == 500) {
+      Alert(
+          context: context,
+          title: "Tidak ada koneksi internet",
+          type: AlertType.error,
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Ok",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+            )
+          ]).show();
     } else {
       Alert(
           context: context,

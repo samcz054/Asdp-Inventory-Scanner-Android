@@ -1,65 +1,48 @@
-import 'dart:convert';
+// ignore_for_file: prefer_const_constructors, no_logic_in_create_state, unnecessary_string_interpolations
 
-import 'package:androidbarcode/modelBarang.dart';
-import 'package:androidbarcode/page/welcome_page.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+
+import '../modelBarang.dart';
 
 class DetailPage extends StatefulWidget {
-  // const DetailPage({Key? key}) : super(key: key);
-  final String getKode_barang;
-  DetailPage(this.getKode_barang);
+  final DetailBarang detailBarang;
+  const DetailPage({Key key, this.detailBarang}) : super(key: key);
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  State<DetailPage> createState() => _DetailPageState(detailBarang);
 }
 
 class _DetailPageState extends State<DetailPage> {
-  DetailBarang detailBarang;
-
-  Future<DetailBarang> _scanGetDetail() async {
-    await http
-        .get(Uri.parse(
-            "http://192.168.1.8:8000/api/detail/${widget.getKode_barang}/"))
-        .then((response) {
-      if (jsonDecode(response.body) != null) {
-        setState(() {
-          detailBarang = DetailBarang.fromJson(jsonDecode(response.body));
-        });
-      }
-    });
-    return detailBarang;
-  }
+  _DetailPageState(DetailBarang detailBarang);
 
   @override
-  void iniState() {
-    _scanGetDetail();
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
-      body: detailBarang == null
-          ? Center(
-              child: Text(
-                  "Barcode dengan kode ${widget.getKode_barang} tidak ditemukan"))
-          : Container(
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Text("Code : ${detailBarang.kodeBarang}",
-                        style: TextStyle(fontSize: 20)),
-                    Text("Nama barang : ${detailBarang.namaBarang}",
-                        style: TextStyle(fontSize: 20)),
-                    Text("Status  : ${detailBarang.namaPeminjam}",
-                        style: TextStyle(fontSize: 20)),
-                    Text("Nomor Seri : ${detailBarang.nomorSeri}",
-                        style: TextStyle(fontSize: 20)),
-                  ],
+        body: Column(
+      children: [
+        Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 80),
+                child: Image.network(
+                  'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}',
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-    );
+            ],
+          ),
+        ),
+        Text("Nama Barang : ${widget.detailBarang.namaBarang}"),
+        Text("Nomor Seri : ${widget.detailBarang.nomorSeri}"),
+        Text("Nama Peminjam : ${widget.detailBarang.namaPeminjam}"),
+        Text("Keterangan :"),
+        Text("${widget.detailBarang.keteranganBarang}"),
+      ],
+    ));
   }
 }

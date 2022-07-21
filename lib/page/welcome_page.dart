@@ -1,14 +1,18 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, non_constant_identifier_names
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, non_constant_identifier_names, deprecated_member_use, unused_local_variable, use_build_context_synchronously, avoid_print
 
+import 'dart:convert';
+
+import 'package:androidbarcode/modelBarang.dart';
 import 'package:androidbarcode/page/detail_page.dart';
 import 'package:androidbarcode/page/login_page.dart';
+import 'package:androidbarcode/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePageWidget extends StatefulWidget {
   // const HomePageWidget({Key key}) : super(key: key);
@@ -18,15 +22,8 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   // Fungsi Scan
-  Future _scanDetailBarang() async {
-    await FlutterBarcodeScanner.scanBarcode(
-            "#fce303", "Batal", true, ScanMode.DEFAULT)
-        .then((getKode_barang) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => DetailPage(getKode_barang)));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 1,
               decoration: BoxDecoration(
-                color: Color(0xFFEEEEEE),
+                color: bgColor,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -111,13 +108,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ButtonTheme(
                           minWidth: 150,
                           child: RaisedButton(
-                            color: Color.fromARGB(255, 28, 99, 183),
+                            color: mainColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0))),
                             onPressed: () {
                               // Scan Barcode
-                              _scanDetailBarang();
+                              _detailBarangScan();
                             },
                             child: Text(
                               'Scan Barcode',
@@ -143,7 +140,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ButtonTheme(
                           minWidth: 150,
                           child: RaisedButton(
-                            color: Color.fromARGB(255, 28, 99, 183),
+                            color: mainColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0))),
@@ -178,7 +175,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ButtonTheme(
                           minWidth: 150,
                           child: RaisedButton(
-                            color: Color.fromARGB(255, 28, 99, 183),
+                            color: mainColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0))),
@@ -193,7 +190,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ),
                             ),
                             onPressed: () {
-                              _pengembalian();
+                              _pengembalianScan();
                             },
                           ),
                         ),
@@ -209,12 +206,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ButtonTheme(
                           minWidth: 150,
                           child: RaisedButton(
-                            color: Color.fromARGB(255, 28, 99, 183),
+                            color: mainColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0))),
                             child: Text(
-                              'Peminjam',
+                              'Peminjaman',
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 textStyle:
@@ -224,7 +221,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ),
                             ),
                             onPressed: () {
-                              _peminjaman();
+                              _peminjamanScan(context);
                             },
                           ),
                         ),
@@ -240,18 +237,57 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     );
   }
 
-  Future _pengembalian() async {
-    //
-    // final getKode_barang = await FlutterBarcodeScanner.scanBarcode(
-    //     "#fce303", "Batal", true, ScanMode.BARCODE);
+  Future _detailBarangScan() async {
+    String getKode_barang = await scanner.scan();
 
+    if (getKode_barang == null) {
+      // gagal sacan
+      print("Kosong");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
+        headers: {'Accept': 'application/json'},
+      );
+
+      if (response.statusCode == 201) {
+        final detailBarang = jsonDecode(response.body);
+        DetailBarang details = DetailBarang.fromJson(detailBarang);
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => DetailPage(detailBarang: details)),
+          ),
+        );
+      } else {
+        Alert(
+          context: context,
+          title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
+          type: AlertType.error,
+          buttons: [
+            DialogButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                "Ok",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ],
+        ).show();
+      }
+    }
+  }
+
+  Future _pengembalianScan() async {
     String getKode_barang = await scanner.scan();
 
     if (getKode_barang == null) {
       print('Kosong');
     } else {
       final response = await http.post(
-        Uri.parse('http://192.168.1.8:8000/api/peminjaman/kembali/'),
+        Uri.parse(
+            'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/kembali'),
         headers: {
           'Accept': 'application/json',
         },
@@ -293,8 +329,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
   }
 
-  Future _peminjaman() async {
+  Future _peminjamanScan(BuildContext context) async {
     //
+    final GlobalKey<State> key = GlobalKey<State>();
+
     String getKode_barang = await scanner.scan();
 
     if (getKode_barang == null) {
@@ -304,22 +342,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
       await Alert(
         context: context,
-        title: "Masukkan nama peminjam",
-        content: Column(
-          children: <Widget>[
-            TextField(
-              controller: nama_peminjam,
-              decoration: InputDecoration(
-                labelText: 'Nama Peminjam',
+        title: "$getKode_barang Masukkan nama peminjam",
+        content: Form(
+          key: formkey,
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: nama_peminjam,
+                decoration: InputDecoration(
+                  labelText: 'Nama Peminjam',
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         buttons: [
           DialogButton(
             onPressed: () async {
               final response = await http.post(
-                Uri.parse('http://192.168.1.8:8000/api/peminjaman/pinjam/'),
+                Uri.parse(
+                    'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
                 headers: {
                   'Accept': 'application/json',
                 },
@@ -330,10 +372,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               );
               if (getKode_barang == null) {
                 print("Gagal scan");
+              } else if (nama_peminjam.text.isEmpty) {
+                Alert(
+                  context: context,
+                  title: "Harap isi nama peminjam",
+                  type: AlertType.error,
+                  buttons: [
+                    DialogButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        "Ok",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    )
+                  ],
+                ).show().then((value) => Navigator.pop(context));
               } else if (response.statusCode == 201) {
                 Alert(
                   context: context,
-                  title: "${getKode_barang} berhasil dikembalikan",
+                  title: "${getKode_barang} berhasil dipinjam",
                   type: AlertType.success,
                   buttons: [
                     DialogButton(
