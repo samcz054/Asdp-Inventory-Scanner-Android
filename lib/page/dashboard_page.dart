@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:androidbarcode/page/welcome_page.dart';
 import 'package:androidbarcode/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,70 +67,112 @@ class _DashboardState extends State<Dashboard> {
       ),
       // Dasboard menu
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(0.0),
         child: SafeArea(
             child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 0.0, right: 0.0, top: 30.0, bottom: 0.0),
-                child: new RaisedButton(
-                    elevation: 0.0,
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    padding: EdgeInsets.only(
-                        top: 7.0, bottom: 7.0, right: 40.0, left: 7.0),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SvgPicture.network(
-                          'https://www.freepnglogos.com/uploads/among-us-png/green-among-us-png-character-0.png',
-                          height: 40.0,
-                          width: 40.0,
+                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 280,
+                      child: Material(
+                        color: Colors.white,
+                        elevation: 8,
+                        borderRadius: BorderRadius.circular(8),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: InkWell(
+                          splashColor: mainColor,
+                          onTap: () {
+                            _detailBarangScan();
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Ink.image(
+                                  image:
+                                      AssetImage('assets/images/inventory.png'),
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(
+                                  'Detail Barang',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline4,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              "Galler  ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15.0),
-                            ))
-                      ],
+                      ),
                     ),
-                    textColor: Color(0xFF292929),
-                    color: Colors.blueAccent),
+                  ],
+                ),
               ),
               //
 
               //
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 30),
+                child: Column(
                   children: [
-                    ButtonTheme(
-                      minWidth: 150,
-                      child: RaisedButton(
-                        color: mainColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
-                        child: Text(
-                          'Peminjaman Barang',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                    SizedBox(
+                      width: 280,
+                      child: Material(
+                        color: Colors.white,
+                        elevation: 8,
+                        borderRadius: BorderRadius.circular(8),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: InkWell(
+                          splashColor: mainColor,
+                          onTap: () {
+                            _peminjamanScan();
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Ink.image(
+                                  image:
+                                      AssetImage('assets/images/sending.png'),
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(
+                                  'Peminjaman Barang',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline4,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        onPressed: () {
-                          _peminjamanScan();
-                        },
                       ),
                     ),
                   ],
@@ -142,29 +183,48 @@ class _DashboardState extends State<Dashboard> {
 
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
                   children: [
-                    ButtonTheme(
-                      minWidth: 150,
-                      child: RaisedButton(
-                        color: mainColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
-                        child: Text(
-                          'Pengembalian Barang',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                    SizedBox(
+                      width: 280,
+                      child: Material(
+                        color: Colors.white,
+                        elevation: 8,
+                        borderRadius: BorderRadius.circular(8),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: InkWell(
+                          splashColor: mainColor,
+                          onTap: () {
+                            _pengembalianScan();
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Ink.image(
+                                  image: AssetImage('assets/images/supply.png'),
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(
+                                  'Pengembalian Barang',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline4,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        onPressed: () {
-                          _pengembalianScan();
-                        },
                       ),
                     ),
                   ],

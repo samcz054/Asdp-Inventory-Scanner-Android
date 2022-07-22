@@ -123,7 +123,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 textStyle:
                                     Theme.of(context).textTheme.headline4,
                                 fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
@@ -151,7 +151,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 textStyle:
                                     Theme.of(context).textTheme.headline4,
                                 fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             onPressed: () {
@@ -160,68 +160,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   MaterialPageRoute(builder: (context) {
                                 return LoginPage();
                               }));
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ButtonTheme(
-                          minWidth: 150,
-                          child: RaisedButton(
-                            color: mainColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
-                            child: Text(
-                              'Pengembalian',
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                textStyle:
-                                    Theme.of(context).textTheme.headline4,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            onPressed: () {
-                              _pengembalianScan();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ButtonTheme(
-                          minWidth: 150,
-                          child: RaisedButton(
-                            color: mainColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
-                            child: Text(
-                              'Peminjaman',
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                textStyle:
-                                    Theme.of(context).textTheme.headline4,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            onPressed: () {
-                              _peminjamanScan(context);
                             },
                           ),
                         ),
