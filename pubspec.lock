@@ -365,7 +365,7 @@ packages:
       name: qrscan
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.22"
+    version: "0.3.2"
   rfc_6901:
     dependency: transitive
     description:
