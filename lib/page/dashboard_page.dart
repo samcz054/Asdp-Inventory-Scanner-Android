@@ -6,6 +6,7 @@ import 'package:androidbarcode/page/welcome_page.dart';
 import 'package:androidbarcode/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -84,11 +85,11 @@ class _DashboardState extends State<Dashboard> {
                         width: 280,
                         child: Material(
                           color: mainColor,
-                          elevation: 8,
+                          elevation: 5,
                           borderRadius: BorderRadius.circular(8),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: InkWell(
-                            splashColor: Colors.grey,
+                            splashColor: Color.fromARGB(100, 30, 99, 183),
                             onTap: () {
                               _detailBarangScan();
                             },
@@ -107,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
                                     padding: const EdgeInsets.all(9.0),
                                     child: Text(
                                       'Detail Barang',
-                                      style: GoogleFonts.poppins(
+                                      style: GoogleFonts.roboto(
                                         color: Colors.white,
                                         textStyle: Theme.of(context)
                                             .textTheme
@@ -137,11 +138,11 @@ class _DashboardState extends State<Dashboard> {
                         width: 280,
                         child: Material(
                           color: mainColor,
-                          elevation: 8,
+                          elevation: 5,
                           borderRadius: BorderRadius.circular(8),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: InkWell(
-                            splashColor: Colors.grey,
+                            splashColor: Color.fromARGB(100, 30, 99, 183),
                             onTap: () {
                               _peminjamanScan();
                             },
@@ -160,7 +161,7 @@ class _DashboardState extends State<Dashboard> {
                                     padding: const EdgeInsets.all(9.0),
                                     child: Text(
                                       'Peminjaman Barang',
-                                      style: GoogleFonts.poppins(
+                                      style: GoogleFonts.roboto(
                                         color: Colors.white,
                                         textStyle: Theme.of(context)
                                             .textTheme
@@ -190,11 +191,11 @@ class _DashboardState extends State<Dashboard> {
                         width: 280,
                         child: Material(
                           color: mainColor,
-                          elevation: 8,
+                          elevation: 5,
                           borderRadius: BorderRadius.circular(8),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: InkWell(
-                            splashColor: Colors.grey,
+                            splashColor: Color.fromARGB(100, 30, 99, 183),
                             onTap: () {
                               _peminjamanScan();
                             },
@@ -213,7 +214,7 @@ class _DashboardState extends State<Dashboard> {
                                     padding: const EdgeInsets.all(9.0),
                                     child: Text(
                                       'Pengembalian Barang',
-                                      style: GoogleFonts.poppins(
+                                      style: GoogleFonts.roboto(
                                         color: Colors.white,
                                         textStyle: Theme.of(context)
                                             .textTheme

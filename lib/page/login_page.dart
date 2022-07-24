@@ -79,8 +79,8 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/barcode-app-8lvbvg/assets/mls7m412no1q/Logo_ASDP.svg',
+                      Image.asset(
+                        'assets/images/Logo_ASDP.png',
                         width: MediaQuery.of(context).size.width * 0.7,
                         fit: BoxFit.cover,
                       ),
