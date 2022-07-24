@@ -10,6 +10,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:super_easy_permissions/super_easy_permissions.dart';
 
 import '../modelBarang.dart';
 import 'detail_page.dart';
@@ -66,368 +67,397 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
       // Dasboard menu
-      body: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: SafeArea(
-            child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 280,
-                      child: Material(
-                        color: Colors.white,
-                        elevation: 8,
-                        borderRadius: BorderRadius.circular(8),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: InkWell(
-                          splashColor: mainColor,
-                          onTap: () {
-                            _detailBarangScan();
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Ink.image(
-                                  image:
-                                      AssetImage('assets/images/inventory.png'),
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(
-                                  'Detail Barang',
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    textStyle:
-                                        Theme.of(context).textTheme.headline4,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: SafeArea(
+              child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 280,
+                        child: Material(
+                          color: mainColor,
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(8),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            splashColor: Colors.grey,
+                            onTap: () {
+                              _detailBarangScan();
+                            },
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Ink.image(
+                                    image: AssetImage(
+                                        'assets/images/scanning.png'),
+                                    width: 280,
+                                    height: 170,
+                                    fit: BoxFit.cover,
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(9.0),
+                                    child: Text(
+                                      'Detail Barang',
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              //
 
-              //
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 30),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 280,
-                      child: Material(
-                        color: Colors.white,
-                        elevation: 8,
-                        borderRadius: BorderRadius.circular(8),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: InkWell(
-                          splashColor: mainColor,
-                          onTap: () {
-                            _peminjamanScan();
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Ink.image(
-                                  image:
-                                      AssetImage('assets/images/sending.png'),
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(
-                                  'Peminjaman Barang',
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    textStyle:
-                                        Theme.of(context).textTheme.headline4,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                //
+
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 280,
+                        child: Material(
+                          color: mainColor,
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(8),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            splashColor: Colors.grey,
+                            onTap: () {
+                              _peminjamanScan();
+                            },
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Ink.image(
+                                    image:
+                                        AssetImage('assets/images/pinjams.png'),
+                                    width: 280,
+                                    height: 170,
+                                    fit: BoxFit.cover,
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(9.0),
+                                    child: Text(
+                                      'Peminjaman Barang',
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              //
+                //
 
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 280,
-                      child: Material(
-                        color: Colors.white,
-                        elevation: 8,
-                        borderRadius: BorderRadius.circular(8),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: InkWell(
-                          splashColor: mainColor,
-                          onTap: () {
-                            _pengembalianScan();
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Ink.image(
-                                  image: AssetImage('assets/images/supply.png'),
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(
-                                  'Pengembalian Barang',
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    textStyle:
-                                        Theme.of(context).textTheme.headline4,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 280,
+                        child: Material(
+                          color: mainColor,
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(8),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            splashColor: Colors.grey,
+                            onTap: () {
+                              _peminjamanScan();
+                            },
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Ink.image(
+                                    image:
+                                        AssetImage('assets/images/kembali.png'),
+                                    width: 280,
+                                    height: 170,
+                                    fit: BoxFit.cover,
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(9.0),
+                                    child: Text(
+                                      'Pengembalian Barang',
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              //
-            ],
-          ),
-        )),
+                //
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }
 
   Future _detailBarangScan() async {
-    String getKode_barang = await scanner.scan();
+    bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
+    if (result) {
+      // Permission is granted, do something
 
-    if (getKode_barang == null) {
-      // gagal sacan
-      print("Kosong");
-    } else {
-      final response = await http.get(
-        Uri.parse(
-            'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
-        headers: {'Accept': 'application/json'},
-      );
+      String getKode_barang = await scanner.scan();
 
-      if (response.statusCode == 201) {
-        final detailBarang = jsonDecode(response.body);
-        DetailBarang details = DetailBarang.fromJson(detailBarang);
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => DetailPage(detailBarang: details)),
-          ),
-        );
+      if (getKode_barang == null) {
+        // gagal sacan
+        print("Kosong");
       } else {
-        Alert(
-          context: context,
-          title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
-          type: AlertType.error,
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Ok",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
+        final response = await http.get(
+          Uri.parse(
+              'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
+          headers: {'Accept': 'application/json'},
+        );
+
+        if (response.statusCode == 201) {
+          final detailBarang = jsonDecode(response.body);
+          DetailBarang details = DetailBarang.fromJson(detailBarang);
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => DetailPage(detailBarang: details)),
+            ),
+          );
+        } else {
+          Alert(
+            context: context,
+            title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
+            type: AlertType.error,
+            buttons: [
+              DialogButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Ok",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
+            ],
+          ).show();
+        }
       }
+
+      // endpermission
+    } else {
+      await SuperEasyPermissions.askPermission(Permissions.camera);
     }
   }
 
   Future _peminjamanScan() async {
-    String getKode_barang = await scanner.scan();
+    bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
+    if (result) {
+      // Permission is granted, do something
 
-    if (getKode_barang == null) {
-      print('Kosong');
-    } else {
-      var nama_peminjam = TextEditingController();
+      String getKode_barang = await scanner.scan();
 
-      await Alert(
-        context: context,
-        title: "$getKode_barang Masukkan nama peminjam",
-        content: Column(
-          children: <Widget>[
-            TextField(
-              controller: nama_peminjam,
-              decoration: InputDecoration(
-                labelText: 'Nama Peminjam',
-              ),
-            ),
-          ],
-        ),
-        buttons: [
-          DialogButton(
-            onPressed: () async {
-              final response = await http.post(
-                Uri.parse(
-                    'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
-                headers: {
-                  'Accept': 'application/json',
-                },
-                body: {
-                  'kode_barang': getKode_barang,
-                  'nama_peminjam': nama_peminjam.text,
-                },
-              );
-              if (getKode_barang == null) {
-                print("Gagal scan");
-              } else if (nama_peminjam.text.isEmpty) {
-                Alert(
-                  context: context,
-                  title: "Harap isi nama peminjam",
-                  type: AlertType.error,
-                  buttons: [
-                    DialogButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show().then((value) => Navigator.pop(context));
-              } else if (response.statusCode == 201) {
-                Alert(
-                  context: context,
-                  title: "${getKode_barang} berhasil dipinjam",
-                  type: AlertType.success,
-                  buttons: [
-                    DialogButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show().then((value) => Navigator.pop(context));
-              } else {
-                Alert(
-                  context: context,
-                  title:
-                      "Barang yang di scan saat ini sudah dipinjam atau tidak terdaftar",
-                  type: AlertType.error,
-                  buttons: [
-                    DialogButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show();
-              }
-            },
-            child: Text(
-              "Simpan",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ],
-      ).show();
-    }
-
-    //
-  }
-
-  Future _pengembalianScan() async {
-    String getKode_barang = await scanner.scan();
-
-    if (getKode_barang == null) {
-      // cancel Scan
-      print('Kosong');
-    } else {
-      // scan result
-      final response = await http.post(
-        Uri.parse(
-            'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/kembali'),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          'kode_barang': getKode_barang,
-        },
-      );
-      if (response.statusCode == 201) {
-        // successfull response
-        Alert(
-          context: context,
-          title: " Barang dengan kode ${getKode_barang} berhasil dikembalikan",
-          type: AlertType.success,
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Ok",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
+      if (getKode_barang == null) {
+        print('Kosong');
       } else {
-        Alert(
+        var nama_peminjam = TextEditingController();
+
+        await Alert(
           context: context,
-          title: "Barang yang di scan sudah dikembalikan atau tidak terdaftar",
-          type: AlertType.error,
+          title: "$getKode_barang Masukkan nama peminjam",
+          content: Column(
+            children: <Widget>[
+              TextField(
+                controller: nama_peminjam,
+                decoration: InputDecoration(
+                  labelText: 'Nama Peminjam',
+                ),
+              ),
+            ],
+          ),
           buttons: [
             DialogButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () async {
+                final response = await http.post(
+                  Uri.parse(
+                      'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
+                  headers: {
+                    'Accept': 'application/json',
+                  },
+                  body: {
+                    'kode_barang': getKode_barang,
+                    'nama_peminjam': nama_peminjam.text,
+                  },
+                );
+                if (getKode_barang == null) {
+                  print("Gagal scan");
+                } else if (nama_peminjam.text.isEmpty) {
+                  Alert(
+                    context: context,
+                    title: "Harap isi nama peminjam",
+                    type: AlertType.error,
+                    buttons: [
+                      DialogButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ).show().then((value) => Navigator.pop(context));
+                } else if (response.statusCode == 201) {
+                  Alert(
+                    context: context,
+                    title: "${getKode_barang} berhasil dipinjam",
+                    type: AlertType.success,
+                    buttons: [
+                      DialogButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ).show().then((value) => Navigator.pop(context));
+                } else {
+                  Alert(
+                    context: context,
+                    title:
+                        "Barang yang di scan saat ini sudah dipinjam atau tidak terdaftar",
+                    type: AlertType.error,
+                    buttons: [
+                      DialogButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ).show();
+                }
+              },
               child: Text(
-                "Ok",
+                "Simpan",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             )
           ],
         ).show();
       }
+
+      // endpermission
+    } else {
+      await SuperEasyPermissions.askPermission(Permissions.camera);
+    }
+  }
+
+  Future _pengembalianScan() async {
+    bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
+    if (result) {
+      // Permission is granted, do something
+
+      String getKode_barang = await scanner.scan();
+
+      if (getKode_barang == null) {
+        // cancel Scan
+        print('Kosong');
+      } else {
+        // scan result
+        final response = await http.post(
+          Uri.parse(
+              'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/kembali'),
+          headers: {
+            'Accept': 'application/json',
+          },
+          body: {
+            'kode_barang': getKode_barang,
+          },
+        );
+        if (response.statusCode == 201) {
+          // successfull response
+          Alert(
+            context: context,
+            title:
+                " Barang dengan kode ${getKode_barang} berhasil dikembalikan",
+            type: AlertType.success,
+            buttons: [
+              DialogButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Ok",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
+            ],
+          ).show();
+        } else {
+          Alert(
+            context: context,
+            title:
+                "Barang yang di scan sudah dikembalikan atau tidak terdaftar",
+            type: AlertType.error,
+            buttons: [
+              DialogButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Ok",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
+            ],
+          ).show();
+        }
+      }
+
+      // endpermission
+    } else {
+      await SuperEasyPermissions.askPermission(Permissions.camera);
     }
   }
 }

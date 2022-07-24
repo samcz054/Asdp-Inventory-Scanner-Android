@@ -1,7 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, non_constant_identifier_names, deprecated_member_use, unused_local_variable, use_build_context_synchronously, avoid_print
 
 import 'dart:convert';
-
 import 'package:androidbarcode/modelBarang.dart';
 import 'package:androidbarcode/page/detail_page.dart';
 import 'package:androidbarcode/page/login_page.dart';
@@ -13,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:super_easy_permissions/super_easy_permissions.dart';
 
 class HomePageWidget extends StatefulWidget {
   // const HomePageWidget({Key key}) : super(key: key);
@@ -22,9 +22,6 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  // Fungsi Scan
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,197 +173,53 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   Future _detailBarangScan() async {
-    String getKode_barang = await scanner.scan();
+    bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
+    if (result) {
+      // Permission is granted, do something
 
-    if (getKode_barang == null) {
-      // gagal sacan
-      print("Kosong");
-    } else {
-      final response = await http.get(
-        Uri.parse(
-            'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
-        headers: {'Accept': 'application/json'},
-      );
+      String getKode_barang = await scanner.scan();
 
-      if (response.statusCode == 201) {
-        final detailBarang = jsonDecode(response.body);
-        DetailBarang details = DetailBarang.fromJson(detailBarang);
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => DetailPage(detailBarang: details)),
-          ),
+      if (getKode_barang == null) {
+        // gagal sacan
+        print("Kosong");
+      } else {
+        final response = await http.get(
+          Uri.parse(
+              'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
+          headers: {'Accept': 'application/json'},
         );
-      } else {
-        Alert(
-          context: context,
-          title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
-          type: AlertType.error,
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Ok",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
-      }
-    }
-  }
 
-  Future _pengembalianScan() async {
-    String getKode_barang = await scanner.scan();
-
-    if (getKode_barang == null) {
-      print('Kosong');
-    } else {
-      final response = await http.post(
-        Uri.parse(
-            'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/kembali'),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          'kode_barang': getKode_barang,
-        },
-      );
-      if (response.statusCode == 201) {
-        Alert(
-          context: context,
-          title: "${getKode_barang} berhasil dikembalikan",
-          type: AlertType.success,
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Ok",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
-      } else {
-        Alert(
-          context: context,
-          title: "Barang yang di scan sudah dikembalikan atau tidak terdaftar",
-          type: AlertType.error,
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Ok",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
-      }
-    }
-  }
-
-  Future _peminjamanScan(BuildContext context) async {
-    //
-    final GlobalKey<State> key = GlobalKey<State>();
-
-    String getKode_barang = await scanner.scan();
-
-    if (getKode_barang == null) {
-      print('Kosong');
-    } else {
-      var nama_peminjam = TextEditingController();
-
-      await Alert(
-        context: context,
-        title: "$getKode_barang Masukkan nama peminjam",
-        content: Form(
-          key: formkey,
-          child: Column(
-            children: <Widget>[
-              TextField(
-                controller: nama_peminjam,
-                decoration: InputDecoration(
-                  labelText: 'Nama Peminjam',
-                ),
-              ),
-            ],
-          ),
-        ),
-        buttons: [
-          DialogButton(
-            onPressed: () async {
-              final response = await http.post(
-                Uri.parse(
-                    'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
-                headers: {
-                  'Accept': 'application/json',
-                },
-                body: {
-                  'kode_barang': getKode_barang,
-                  'nama_peminjam': nama_peminjam.text,
-                },
-              );
-              if (getKode_barang == null) {
-                print("Gagal scan");
-              } else if (nama_peminjam.text.isEmpty) {
-                Alert(
-                  context: context,
-                  title: "Harap isi nama peminjam",
-                  type: AlertType.error,
-                  buttons: [
-                    DialogButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show().then((value) => Navigator.pop(context));
-              } else if (response.statusCode == 201) {
-                Alert(
-                  context: context,
-                  title: "${getKode_barang} berhasil dipinjam",
-                  type: AlertType.success,
-                  buttons: [
-                    DialogButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show().then((value) => Navigator.pop(context));
-              } else {
-                Alert(
-                  context: context,
-                  title:
-                      "Barang yang di scan saat ini sudah dipinjam atau tidak terdaftar",
-                  type: AlertType.error,
-                  buttons: [
-                    DialogButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "Ok",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show();
-              }
-            },
-            child: Text(
-              "Simpan",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+        if (response.statusCode == 201) {
+          final detailBarang = jsonDecode(response.body);
+          DetailBarang details = DetailBarang.fromJson(detailBarang);
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => DetailPage(detailBarang: details)),
             ),
-          )
-        ],
-      ).show();
-    }
+          );
+        } else {
+          Alert(
+            context: context,
+            title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
+            type: AlertType.error,
+            buttons: [
+              DialogButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Ok",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
+            ],
+          ).show();
+        }
+      }
 
-    //
+      // endpermission
+    } else {
+      await SuperEasyPermissions.askPermission(Permissions.camera);
+    }
   }
 }

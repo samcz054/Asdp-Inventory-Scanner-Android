@@ -28,11 +28,13 @@ class _DetailPageState extends State<DetailPage> {
             children: [
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 80),
-                child: Image.network(
-                  'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}',
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  fit: BoxFit.cover,
-                ),
+                child: (widget.detailBarang.gambarBarang != null)
+                    ? Image.network(
+                        'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}',
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        fit: BoxFit.cover,
+                      )
+                    : Text("Gambar tidak tersedia"),
               ),
             ],
           ),
@@ -41,7 +43,9 @@ class _DetailPageState extends State<DetailPage> {
         Text("Nomor Seri : ${widget.detailBarang.nomorSeri}"),
         Text("Nama Peminjam : ${widget.detailBarang.namaPeminjam}"),
         Text("Keterangan :"),
-        Text("${widget.detailBarang.keteranganBarang}"),
+        (widget.detailBarang.keteranganBarang != null)
+            ? Text("${widget.detailBarang.keteranganBarang}")
+            : Text("Belum ada spesifikasi barang"),
       ],
     ));
   }

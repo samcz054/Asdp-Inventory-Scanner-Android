@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:androidbarcode/page/dashboard_page.dart';
 import 'package:androidbarcode/widgets/theme.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:androidbarcode/page/welcome_page.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   @override
+  bool _tampilkanPassword = true;
   var email = TextEditingController();
   var password = TextEditingController();
 
@@ -35,6 +37,12 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => Dashboard()),
           ((route) => false));
     }
+  }
+
+  void _toggle() {
+    setState(() {
+      _tampilkanPassword = !_tampilkanPassword;
+    });
   }
 
   Widget build(BuildContext context) {
@@ -147,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextFormField(
                       controller: password,
                       enableSuggestions: false,
-                      obscureText: true,
+                      obscureText: _tampilkanPassword,
                       decoration: InputDecoration(
                         labelText: 'Masukkan Password',
                         enabledBorder: OutlineInputBorder(
@@ -157,6 +165,12 @@ class _LoginPageState extends State<LoginPage> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(width: 2, color: mainColor),
                           borderRadius: BorderRadius.circular(9),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_tampilkanPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: _toggle,
                         ),
                       ),
                     ),
@@ -247,6 +261,10 @@ class _LoginPageState extends State<LoginPage> {
           ]).show();
       return;
     }
+    ProgressDialog loading =
+        ProgressDialog(context, type: ProgressDialogType.Normal);
+    loading.style(message: "Memuat....");
+    loading.show();
     final response = await http.post(
       Uri.parse("https://asdpbarcodeinventory.herokuapp.com/api/login"),
       body: {
@@ -255,6 +273,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       headers: {'Accept': 'application/json'},
     );
+    loading.hide();
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       // print("Login Token :" + body["access_token"]);

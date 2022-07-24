@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -49,7 +49,8 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   http: ^0.13.3
   qrscan: ^0.3.2
-
+  progress_dialog: ^1.2.4
+  super_easy_permissions: any
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,9 @@ flutter:
   - assets/images/inventory.png
   - assets/images/sending.png
   - assets/images/supply.png
+  - assets/images/scanning.png
+  - assets/images/pinjams.png
+  - assets/images/kembali.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
