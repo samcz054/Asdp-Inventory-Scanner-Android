@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:convert';
+
 class DetailBarang {
   final int kodeBarang;
   final String namaPeminjam;
@@ -19,7 +21,7 @@ class DetailBarang {
 
   factory DetailBarang.fromJson(Map<String, dynamic> json) {
     return DetailBarang(
-      kodeBarang: json['kode_barang'],
+      kodeBarang: jsonDecode(json['kode_barang'].toString()),
       namaPeminjam: json['nama_peminjam'],
       namaBarang: json['nama_barang'],
       nomorSeri: json['nomor_seri'],

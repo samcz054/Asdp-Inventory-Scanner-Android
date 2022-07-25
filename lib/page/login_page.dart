@@ -287,25 +287,10 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(
             builder: (context) => Dashboard(),
           ));
-    } else if (response.statusCode == 500) {
-      Alert(
-          context: context,
-          title: "Tidak ada koneksi internet",
-          type: AlertType.error,
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Ok",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () => Navigator.pop(context),
-              width: 120,
-            )
-          ]).show();
     } else {
       Alert(
           context: context,
-          title: "Login Gagal",
+          title: "Login gagal periksa username dan password",
           type: AlertType.error,
           buttons: [
             DialogButton(

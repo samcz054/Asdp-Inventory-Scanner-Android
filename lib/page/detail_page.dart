@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_const_constructors, no_logic_in_create_state, unnecessary_string_interpolations
+// ignore_for_file: prefer_const_constructors, no_logic_in_create_state, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables
 
+import 'package:androidbarcode/widgets/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../modelBarang.dart';
 
@@ -18,65 +20,194 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Container(
-      //   width: double.infinity,
-      //   height: double.infinity,
-      //   child: Column(
-      //     children: <Widget>[
-      //       Expanded(
-      //         child: Container(
-      //           color: Color(0xffacfff),
-      //         ),
-      //       ),
-      //       Expanded(
-      //         child: Container(
-      //           color: Colors.white,
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
-
-
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 40),
-                    child: (widget.detailBarang.gambarBarang != null)
-                        ? Image.network(
-                            'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}',
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            'assets/images/not_found.png',
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            fit: BoxFit.cover,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    mainColor,
+                    Color.fromARGB(255, 121, 168, 255),
+                  ],
+                ),
+              ),
+              child: Container(
+                width: double.infinity,
+                height: 420.0,
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: CircleAvatar(
+                          backgroundImage: (widget.detailBarang.gambarBarang !=
+                                  null)
+                              ? NetworkImage(
+                                  'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}')
+                              : AssetImage('assets/images/not_found.png'),
+                          radius: 50,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "${widget.detailBarang.namaBarang}",
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          textStyle: Theme.of(context).textTheme.headline4,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Card(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        clipBehavior: Clip.antiAlias,
+                        color: Colors.white,
+                        elevation: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 22, horizontal: 8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Nomor Seri",
+                                      style: GoogleFonts.roboto(
+                                        color: mainColor,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      "${widget.detailBarang.nomorSeri}",
+                                      style: GoogleFonts.roboto(
+                                        color: mainColor,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Status",
+                                      style: GoogleFonts.roboto(
+                                        color: mainColor,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      "${widget.detailBarang.namaPeminjam}",
+                                      style: GoogleFonts.roboto(
+                                        color: mainColor,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Kode",
+                                      style: GoogleFonts.roboto(
+                                        color: mainColor,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      "${widget.detailBarang.kodeBarang}",
+                                      style: GoogleFonts.roboto(
+                                        color: mainColor,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                      )
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-            Text(
-              "Nama Barang :         ${widget.detailBarang.namaBarang}",
-              textAlign: TextAlign.justify,
-            ),
-            Text("Nomor Seri :         ${widget.detailBarang.nomorSeri}"),
-            Text("Nama Peminjam :         ${widget.detailBarang.namaPeminjam}"),
-            Text("Keterangan :"),
-            (widget.detailBarang.keteranganBarang != null)
-                ? Text("${widget.detailBarang.keteranganBarang}")
-                : Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Text("Belum ada spesifikasi barang"),
-                  ),
+            //
+            Container(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Spesifikasi :",
+                      style: GoogleFonts.roboto(
+                        color: mainColor,
+                        textStyle: Theme.of(context).textTheme.headline4,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      "${widget.detailBarang.keteranganBarang}",
+                      style: GoogleFonts.roboto(
+                        color: Colors.black,
+                        textStyle: Theme.of(context).textTheme.headline4,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, non_constant_identifier_names, deprecated_member_use, unused_local_variable, use_build_context_synchronously, avoid_print
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, non_constant_identifier_names, deprecated_member_use, unused_local_variable, use_build_context_synchronously, avoid_print, avoid_unnecessary_containers
 
 import 'dart:convert';
 import 'package:androidbarcode/modelBarang.dart';
