@@ -26,141 +26,151 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1,
-            decoration: BoxDecoration(
-              color: bgColor,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 130, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Text(
-                          'SELAMAT DATANG',
-                          style: GoogleFonts.poppins(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Container(
+          child: SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 1,
+                decoration: BoxDecoration(
+                  color: bgColor,
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Text(
-                          'ASDP INVENTORY SCANNER',
-                          style: GoogleFonts.poppins(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 80),
-                        child: Image.asset(
-                          'assets/images/Logo_ASDP.png',
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ButtonTheme(
-                        minWidth: 150,
-                        child: RaisedButton(
-                          color: mainColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0))),
-                          onPressed: () {
-                            // Scan Barcode
-                            _detailBarangScan();
-                          },
-                          child: Text(
-                            'Scan Barcode',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              textStyle: Theme.of(context).textTheme.headline4,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 130, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(0, 0),
+                            child: Text(
+                              'SELAMAT DATANG',
+                              style: GoogleFonts.poppins(
+                                textStyle:
+                                    Theme.of(context).textTheme.headline4,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ButtonTheme(
-                        minWidth: 150,
-                        child: RaisedButton(
-                          color: mainColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0))),
-                          child: Text(
-                            'Login',
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              textStyle: Theme.of(context).textTheme.headline4,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(0, 0),
+                            child: Text(
+                              'ASDP INVENTORY SCANNER',
+                              style: GoogleFonts.poppins(
+                                textStyle:
+                                    Theme.of(context).textTheme.headline4,
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                           ),
-                          onPressed: () {
-                            print('Login Menu');
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return LoginPage();
-                            }));
-                          },
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 80, 0, 80),
+                            child: SvgPicture.network(
+                              'https://upload.wikimedia.org/wikipedia/id/c/c9/Logo_ASDP.svg',
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ButtonTheme(
+                            minWidth: 150,
+                            child: RaisedButton(
+                              color: mainColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0))),
+                              onPressed: () {
+                                // Scan Barcode
+                                _detailBarangScan();
+                              },
+                              child: Text(
+                                'Scan Barcode',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  textStyle:
+                                      Theme.of(context).textTheme.headline4,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ButtonTheme(
+                            minWidth: 150,
+                            child: RaisedButton(
+                              color: mainColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0))),
+                              child: Text(
+                                'Login',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  textStyle:
+                                      Theme.of(context).textTheme.headline4,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onPressed: () {
+                                print('Login Menu');
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return LoginPage();
+                                }));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

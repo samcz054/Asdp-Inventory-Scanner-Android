@@ -20,7 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   bool _tampilkanPassword = true;
-  var email = TextEditingController();
+  var username = TextEditingController();
   var password = TextEditingController();
 
   @override
@@ -46,162 +46,165 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Colors.black,
-                        onPressed: () {
-                          Navigator.pop(context,
-                              MaterialPageRoute(builder: (context) {
-                            return HomePageWidget();
-                          }));
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 20),
-                  child: Row(
+    return SizedBox(
+      child: Scaffold(
+        backgroundColor: bgColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/images/Logo_ASDP.png',
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        fit: BoxFit.cover,
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back),
+                          color: Colors.black,
+                          onPressed: () {
+                            Navigator.pop(context,
+                                MaterialPageRoute(builder: (context) {
+                              return HomePageWidget();
+                            }));
+                          },
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'ASDP Inventory Scanner',
-                      style: GoogleFonts.poppins(
-                        color: Color.fromARGB(255, 83, 83, 83),
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 20),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.network(
+                          'https://upload.wikimedia.org/wikipedia/id/c/c9/Logo_ASDP.svg',
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
-                  child: Row(
+                  ),
+                  Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Login Page',
+                        'ASDP Inventory Scanner',
                         style: GoogleFonts.poppins(
-                          color: Color.fromARGB(255, 97, 97, 97),
+                          color: Color.fromARGB(255, 83, 83, 83),
                           textStyle: Theme.of(context).textTheme.headline4,
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
-                ),
-
-                // Field Email
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24, 8, 24, 0),
-                  child: SizedBox(
-                    width: 280,
-                    child: TextFormField(
-                      controller: email,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Masukkan Email',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2,
-                            color: mainColor,
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Login Page',
+                          style: GoogleFonts.poppins(
+                            color: Color.fromARGB(255, 97, 97, 97),
+                            textStyle: Theme.of(context).textTheme.headline4,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
-                          borderRadius: BorderRadius.circular(9),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: mainColor),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                      ),
+                      ],
                     ),
                   ),
-                ),
 
-                // Field Password
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24, 18, 24, 0),
-                  child: SizedBox(
-                    width: 280,
-                    child: TextFormField(
-                      controller: password,
-                      enableSuggestions: false,
-                      obscureText: _tampilkanPassword,
-                      decoration: InputDecoration(
-                        labelText: 'Masukkan Password',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: mainColor),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: mainColor),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(_tampilkanPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                          onPressed: _toggle,
+                  // Field Email
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(24, 8, 24, 0),
+                    child: SizedBox(
+                      width: 280,
+                      child: TextFormField(
+                        controller: username,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Masukkan Username',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 2,
+                              color: mainColor,
+                            ),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: mainColor),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
 
-                // Login Button
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
-                  child: ButtonTheme(
-                    minWidth: 150,
-                    child: RaisedButton(
-                      color: mainColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      child: Text(
-                        'Login',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          textStyle: Theme.of(context).textTheme.headline4,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                  // Field Password
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(24, 18, 24, 0),
+                    child: SizedBox(
+                      width: 280,
+                      child: TextFormField(
+                        controller: password,
+                        enableSuggestions: false,
+                        obscureText: _tampilkanPassword,
+                        decoration: InputDecoration(
+                          labelText: 'Masukkan Password',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: mainColor),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: mainColor),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(_tampilkanPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: _toggle,
+                          ),
                         ),
                       ),
-                      onPressed: () {
-                        _Login(context);
-                      },
                     ),
                   ),
-                ),
-              ],
+
+                  // Login Button
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                    child: ButtonTheme(
+                      minWidth: 150,
+                      child: RaisedButton(
+                        color: mainColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                        child: Text(
+                          'Login',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            textStyle: Theme.of(context).textTheme.headline4,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        onPressed: () {
+                          _Login(context);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -210,11 +213,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future _Login(context) async {
-    if (email.text.isEmpty && password.text.isEmpty) {
+    if (username.text.isEmpty && password.text.isEmpty) {
       Alert(
           context: context,
           type: AlertType.error,
-          title: "Email dan Password harus diisi",
+          title: "Username dan Password harus diisi",
           buttons: [
             DialogButton(
               child: Text(
@@ -227,11 +230,11 @@ class _LoginPageState extends State<LoginPage> {
           ]).show();
       return;
     }
-    if (email.text.isEmpty) {
+    if (username.text.isEmpty) {
       Alert(
           context: context,
           type: AlertType.error,
-          title: "Email harus diisi",
+          title: "Username harus diisi",
           buttons: [
             DialogButton(
               child: Text(
@@ -268,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
     final response = await http.post(
       Uri.parse("https://asdpbarcodeinventory.herokuapp.com/api/login"),
       body: {
-        'email': email.text,
+        'username': username.text,
         'password': password.text,
       },
       headers: {'Accept': 'application/json'},

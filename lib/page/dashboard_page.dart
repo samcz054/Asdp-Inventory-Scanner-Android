@@ -6,7 +6,6 @@ import 'package:androidbarcode/page/welcome_page.dart';
 import 'package:androidbarcode/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -67,8 +66,9 @@ class _DashboardState extends State<Dashboard> {
                   ])
         ],
       ),
-      // Dasboard menu
+      // Dasboard menu,
       body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(0.0),
           child: SafeArea(
@@ -78,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 25, 0, 15),
                   child: Column(
                     children: [
                       SizedBox(
@@ -107,7 +107,7 @@ class _DashboardState extends State<Dashboard> {
                                   Padding(
                                     padding: const EdgeInsets.all(9.0),
                                     child: Text(
-                                      'Detail Barang',
+                                      'Scan Detail Barang',
                                       style: GoogleFonts.roboto(
                                         color: Colors.white,
                                         textStyle: Theme.of(context)
@@ -160,7 +160,7 @@ class _DashboardState extends State<Dashboard> {
                                   Padding(
                                     padding: const EdgeInsets.all(9.0),
                                     child: Text(
-                                      'Peminjaman Barang',
+                                      'Scan Peminjaman Barang',
                                       style: GoogleFonts.roboto(
                                         color: Colors.white,
                                         textStyle: Theme.of(context)
@@ -213,7 +213,7 @@ class _DashboardState extends State<Dashboard> {
                                   Padding(
                                     padding: const EdgeInsets.all(9.0),
                                     child: Text(
-                                      'Pengembalian Barang',
+                                      'Scan Pengembalian Barang',
                                       style: GoogleFonts.roboto(
                                         color: Colors.white,
                                         textStyle: Theme.of(context)
@@ -349,7 +349,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       )
                     ],
-                  ).show().then((value) => Navigator.pop(context));
+                  ).show();
                 } else if (response.statusCode == 201) {
                   Alert(
                     context: context,
@@ -380,7 +380,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       )
                     ],
-                  ).show();
+                  ).show().then((value) => Navigator.pop(context));
                 }
               },
               child: Text(
