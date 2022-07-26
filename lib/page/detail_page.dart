@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, no_logic_in_create_state, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, no_logic_in_create_state, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
 
 import 'package:androidbarcode/widgets/theme.dart';
 import 'package:flutter/material.dart';
@@ -184,27 +184,39 @@ class _DetailPageState extends State<DetailPage> {
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Spesifikasi :",
-                      style: GoogleFonts.roboto(
-                        color: mainColor,
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "${widget.detailBarang.keteranganBarang}",
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ],
+                  children: (widget.detailBarang.keteranganBarang != null)
+                      ? <Widget>[
+                          Text(
+                            "Spesifikasi :",
+                            style: GoogleFonts.roboto(
+                              color: mainColor,
+                              textStyle: Theme.of(context).textTheme.headline4,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "${widget.detailBarang.keteranganBarang}",
+                            style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              textStyle: Theme.of(context).textTheme.headline4,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ]
+                      : <Widget>[
+                          Text(
+                            "Spesifikasi kosong / belum diisi",
+                            style: GoogleFonts.roboto(
+                              color: mainColor,
+                              textStyle: Theme.of(context).textTheme.headline4,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                 ),
               ),
             )

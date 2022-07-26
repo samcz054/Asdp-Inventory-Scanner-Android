@@ -144,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
                           child: InkWell(
                             splashColor: Color.fromARGB(100, 30, 99, 183),
                             onTap: () {
-                              _peminjamanScan();
+                              _pinjamScan();
                             },
                             child: SingleChildScrollView(
                               child: Column(
@@ -197,7 +197,7 @@ class _DashboardState extends State<Dashboard> {
                           child: InkWell(
                             splashColor: Color.fromARGB(100, 30, 99, 183),
                             onTap: () {
-                              _peminjamanScan();
+                              _pengembalianScan();
                             },
                             child: SingleChildScrollView(
                               child: Column(
@@ -294,7 +294,7 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
-  Future _peminjamanScan() async {
+  Future _pinjamScan() async {
     bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
     if (result) {
       // Permission is granted, do something
@@ -302,94 +302,118 @@ class _DashboardState extends State<Dashboard> {
       String getKode_barang = await scanner.scan();
 
       if (getKode_barang == null) {
-        print('Kosong');
+        // gagal sacan
+        print("Kosong");
       } else {
-        var nama_peminjam = TextEditingController();
+        final response = await http.get(
+          Uri.parse(
+              'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
+          headers: {'Accept': 'application/json'},
+        );
 
-        await Alert(
-          context: context,
-          title: "$getKode_barang Masukkan nama peminjam",
-          content: Column(
-            children: <Widget>[
-              TextField(
-                controller: nama_peminjam,
-                decoration: InputDecoration(
-                  labelText: 'Nama Peminjam',
+        if (response.statusCode == 201) {
+          // Input nama peminjam
+
+          var nama_peminjam = TextEditingController();
+          await Alert(
+            context: context,
+            title: "$getKode_barang Masukkan nama peminjam",
+            content: Column(
+              children: <Widget>[
+                TextField(
+                  controller: nama_peminjam,
+                  decoration: InputDecoration(
+                    labelText: 'Nama Peminjam',
+                  ),
                 ),
-              ),
+              ],
+            ),
+            buttons: [
+              DialogButton(
+                onPressed: () async {
+                  final response = await http.post(
+                    Uri.parse(
+                        'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
+                    headers: {
+                      'Accept': 'application/json',
+                    },
+                    body: {
+                      'kode_barang': getKode_barang,
+                      'nama_peminjam': nama_peminjam.text,
+                    },
+                  );
+                  if (getKode_barang == null) {
+                    print("Gagal scan");
+                  } else if (nama_peminjam.text.isEmpty) {
+                    Alert(
+                      context: context,
+                      title: "Harap isi nama peminjam",
+                      type: AlertType.error,
+                      buttons: [
+                        DialogButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        )
+                      ],
+                    ).show();
+                  } else if (response.statusCode == 201) {
+                    Alert(
+                      context: context,
+                      title: "${getKode_barang} berhasil dipinjam",
+                      type: AlertType.success,
+                      buttons: [
+                        DialogButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        )
+                      ],
+                    ).show().then((value) => Navigator.pop(context));
+                  } else {
+                    Alert(
+                      context: context,
+                      title: "Barang yang di scan saat ini sudah dipinjam",
+                      type: AlertType.error,
+                      buttons: [
+                        DialogButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        )
+                      ],
+                    ).show().then((value) => Navigator.pop(context));
+                  }
+                },
+                child: Text(
+                  "Simpan",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
             ],
-          ),
-          buttons: [
-            DialogButton(
-              onPressed: () async {
-                final response = await http.post(
-                  Uri.parse(
-                      'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
-                  headers: {
-                    'Accept': 'application/json',
-                  },
-                  body: {
-                    'kode_barang': getKode_barang,
-                    'nama_peminjam': nama_peminjam.text,
-                  },
-                );
-                if (getKode_barang == null) {
-                  print("Gagal scan");
-                } else if (nama_peminjam.text.isEmpty) {
-                  Alert(
-                    context: context,
-                    title: "Harap isi nama peminjam",
-                    type: AlertType.error,
-                    buttons: [
-                      DialogButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ).show();
-                } else if (response.statusCode == 201) {
-                  Alert(
-                    context: context,
-                    title: "${getKode_barang} berhasil dipinjam",
-                    type: AlertType.success,
-                    buttons: [
-                      DialogButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ).show().then((value) => Navigator.pop(context));
-                } else {
-                  Alert(
-                    context: context,
-                    title:
-                        "Barang yang di scan saat ini sudah dipinjam atau tidak terdaftar",
-                    type: AlertType.error,
-                    buttons: [
-                      DialogButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ).show().then((value) => Navigator.pop(context));
-                }
-              },
-              child: Text(
-                "Simpan",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
+          ).show();
+        } else {
+          Alert(
+            context: context,
+            title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
+            type: AlertType.error,
+            buttons: [
+              DialogButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Ok",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
+            ],
+          ).show();
+        }
       }
 
       // endpermission
@@ -397,6 +421,110 @@ class _DashboardState extends State<Dashboard> {
       await SuperEasyPermissions.askPermission(Permissions.camera);
     }
   }
+
+  // Future _peminjamanScan() async {
+  //   bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
+  //   if (result) {
+  //     // Permission is granted, do something
+
+  //     String getKode_barang = await scanner.scan();
+
+  //     if (getKode_barang == null) {
+  //       print('Kosong');
+  //     } else {
+  //       var nama_peminjam = TextEditingController();
+
+  // await Alert(
+  //   context: context,
+  //   title: "$getKode_barang Masukkan nama peminjam",
+  //   content: Column(
+  //     children: <Widget>[
+  //       TextField(
+  //         controller: nama_peminjam,
+  //         decoration: InputDecoration(
+  //           labelText: 'Nama Peminjam',
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+  //   buttons: [
+  //     DialogButton(
+  //       onPressed: () async {
+  //         final response = await http.post(
+  //           Uri.parse(
+  //               'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
+  //           headers: {
+  //             'Accept': 'application/json',
+  //           },
+  //           body: {
+  //             'kode_barang': getKode_barang,
+  //             'nama_peminjam': nama_peminjam.text,
+  //           },
+  //         );
+  //         if (getKode_barang == null) {
+  //           print("Gagal scan");
+  //         } else if (nama_peminjam.text.isEmpty) {
+  //           Alert(
+  //             context: context,
+  //             title: "Harap isi nama peminjam",
+  //             type: AlertType.error,
+  //             buttons: [
+  //               DialogButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 child: Text(
+  //                   "Ok",
+  //                   style: TextStyle(color: Colors.white, fontSize: 20),
+  //                 ),
+  //               )
+  //             ],
+  //           ).show();
+  //         } else if (response.statusCode == 201) {
+  //           Alert(
+  //             context: context,
+  //             title: "${getKode_barang} berhasil dipinjam",
+  //             type: AlertType.success,
+  //             buttons: [
+  //               DialogButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 child: Text(
+  //                   "Ok",
+  //                   style: TextStyle(color: Colors.white, fontSize: 20),
+  //                 ),
+  //               )
+  //             ],
+  //           ).show().then((value) => Navigator.pop(context));
+  //         } else {
+  //           Alert(
+  //             context: context,
+  //             title:
+  //                 "Barang yang di scan saat ini sudah dipinjam atau tidak terdaftar",
+  //             type: AlertType.error,
+  //             buttons: [
+  //               DialogButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 child: Text(
+  //                   "Ok",
+  //                   style: TextStyle(color: Colors.white, fontSize: 20),
+  //                 ),
+  //               )
+  //             ],
+  //           ).show().then((value) => Navigator.pop(context));
+  //         }
+  //       },
+  //       child: Text(
+  //         "Simpan",
+  //         style: TextStyle(color: Colors.white, fontSize: 20),
+  //       ),
+  //     )
+  //   ],
+  // ).show();
+  //     }
+
+  //     // endpermission
+  //   } else {
+  //     await SuperEasyPermissions.askPermission(Permissions.camera);
+  //   }
+  // }
 
   Future _pengembalianScan() async {
     bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
