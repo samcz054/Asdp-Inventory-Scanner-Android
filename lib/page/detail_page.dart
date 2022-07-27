@@ -44,17 +44,20 @@ class _DetailPageState extends State<DetailPage> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
-                        child: CircleAvatar(
-                          backgroundImage: (widget.detailBarang.gambarBarang !=
-                                  null)
-                              ? NetworkImage(
-                                  'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}')
-                              : AssetImage('assets/images/not_found.png'),
-                          radius: 50,
+                        child: Container(
+                          height: 140,
+                          width: 140,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: (widget.detailBarang.gambarBarang != null)
+                                ? Image.network(
+                                    'https://asdpbarcodeinventory.herokuapp.com/fotobarang/${widget.detailBarang.gambarBarang}')
+                                : Image.asset('assets/images/not_found.png'),
+                          ),
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       Text(
                         "${widget.detailBarang.namaBarang}",
