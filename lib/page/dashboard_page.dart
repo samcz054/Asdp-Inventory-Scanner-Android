@@ -307,7 +307,7 @@ class _DashboardState extends State<Dashboard> {
       } else {
         final response = await http.get(
           Uri.parse(
-              'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
+              'https://asdpbarcodeinventory.herokuapp.com/api/checkKode/${getKode_barang}'),
           headers: {'Accept': 'application/json'},
         );
 
@@ -401,7 +401,8 @@ class _DashboardState extends State<Dashboard> {
         } else {
           Alert(
             context: context,
-            title: "Kode ${getKode_barang} tidak ada dalam daftar inventaris",
+            title:
+                "Kode ${getKode_barang} tidak ada dalam daftar inventaris atau sudah dipinjam",
             type: AlertType.error,
             buttons: [
               DialogButton(
