@@ -260,7 +260,6 @@ class _DashboardState extends State<Dashboard> {
               'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
           headers: {
             'Accept': 'application/json',
-            'Authorization': 'Bearer $accessToken',
           },
         );
 
