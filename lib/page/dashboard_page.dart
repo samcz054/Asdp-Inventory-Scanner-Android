@@ -24,6 +24,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   String userName = "";
+  String accessToken = "";
 
   @override
   void initState() {
@@ -34,7 +35,8 @@ class _DashboardState extends State<Dashboard> {
   void getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      userName = preferences.get('login');
+      userName = preferences.get('username');
+      accessToken = preferences.get('login');
     });
   }
 
@@ -233,7 +235,6 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                 ),
-
                 //
               ],
             ),
@@ -257,7 +258,10 @@ class _DashboardState extends State<Dashboard> {
         final response = await http.get(
           Uri.parse(
               'https://asdpbarcodeinventory.herokuapp.com/api/detail/${getKode_barang}'),
-          headers: {'Accept': 'application/json'},
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
         );
 
         if (response.statusCode == 201) {
@@ -308,7 +312,10 @@ class _DashboardState extends State<Dashboard> {
         final response = await http.get(
           Uri.parse(
               'https://asdpbarcodeinventory.herokuapp.com/api/checkKode/${getKode_barang}'),
-          headers: {'Accept': 'application/json'},
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
         );
 
         if (response.statusCode == 201) {
@@ -336,6 +343,7 @@ class _DashboardState extends State<Dashboard> {
                         'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
                     headers: {
                       'Accept': 'application/json',
+                      'Authorization': 'Bearer $accessToken',
                     },
                     body: {
                       'kode_barang': getKode_barang,
@@ -423,110 +431,6 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
-  // Future _peminjamanScan() async {
-  //   bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
-  //   if (result) {
-  //     // Permission is granted, do something
-
-  //     String getKode_barang = await scanner.scan();
-
-  //     if (getKode_barang == null) {
-  //       print('Kosong');
-  //     } else {
-  //       var nama_peminjam = TextEditingController();
-
-  // await Alert(
-  //   context: context,
-  //   title: "$getKode_barang Masukkan nama peminjam",
-  //   content: Column(
-  //     children: <Widget>[
-  //       TextField(
-  //         controller: nama_peminjam,
-  //         decoration: InputDecoration(
-  //           labelText: 'Nama Peminjam',
-  //         ),
-  //       ),
-  //     ],
-  //   ),
-  //   buttons: [
-  //     DialogButton(
-  //       onPressed: () async {
-  //         final response = await http.post(
-  //           Uri.parse(
-  //               'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/pinjam'),
-  //           headers: {
-  //             'Accept': 'application/json',
-  //           },
-  //           body: {
-  //             'kode_barang': getKode_barang,
-  //             'nama_peminjam': nama_peminjam.text,
-  //           },
-  //         );
-  //         if (getKode_barang == null) {
-  //           print("Gagal scan");
-  //         } else if (nama_peminjam.text.isEmpty) {
-  //           Alert(
-  //             context: context,
-  //             title: "Harap isi nama peminjam",
-  //             type: AlertType.error,
-  //             buttons: [
-  //               DialogButton(
-  //                 onPressed: () => Navigator.pop(context),
-  //                 child: Text(
-  //                   "Ok",
-  //                   style: TextStyle(color: Colors.white, fontSize: 20),
-  //                 ),
-  //               )
-  //             ],
-  //           ).show();
-  //         } else if (response.statusCode == 201) {
-  //           Alert(
-  //             context: context,
-  //             title: "${getKode_barang} berhasil dipinjam",
-  //             type: AlertType.success,
-  //             buttons: [
-  //               DialogButton(
-  //                 onPressed: () => Navigator.pop(context),
-  //                 child: Text(
-  //                   "Ok",
-  //                   style: TextStyle(color: Colors.white, fontSize: 20),
-  //                 ),
-  //               )
-  //             ],
-  //           ).show().then((value) => Navigator.pop(context));
-  //         } else {
-  //           Alert(
-  //             context: context,
-  //             title:
-  //                 "Barang yang di scan saat ini sudah dipinjam atau tidak terdaftar",
-  //             type: AlertType.error,
-  //             buttons: [
-  //               DialogButton(
-  //                 onPressed: () => Navigator.pop(context),
-  //                 child: Text(
-  //                   "Ok",
-  //                   style: TextStyle(color: Colors.white, fontSize: 20),
-  //                 ),
-  //               )
-  //             ],
-  //           ).show().then((value) => Navigator.pop(context));
-  //         }
-  //       },
-  //       child: Text(
-  //         "Simpan",
-  //         style: TextStyle(color: Colors.white, fontSize: 20),
-  //       ),
-  //     )
-  //   ],
-  // ).show();
-  //     }
-
-  //     // endpermission
-  //   } else {
-  //     await SuperEasyPermissions.askPermission(Permissions.camera);
-  //   }
-  // }
-
   Future _pengembalianScan() async {
     bool result = await SuperEasyPermissions.askPermission(Permissions.camera);
     if (result) {
@@ -544,6 +448,7 @@ class _DashboardState extends State<Dashboard> {
               'https://asdpbarcodeinventory.herokuapp.com/api/peminjaman/kembali'),
           headers: {
             'Accept': 'application/json',
+            'Authorization': 'Bearer $accessToken',
           },
           body: {
             'kode_barang': getKode_barang,

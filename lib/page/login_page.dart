@@ -281,7 +281,9 @@ class _LoginPageState extends State<LoginPage> {
       final body = jsonDecode(response.body);
       // print("Login Token :" + body["access_token"]);
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setString("login", body["name"]);
+      preferences.setString("username", body["name"]);
+      preferences.setString("login", body["access_token"]);
+
       Navigator.push(
           context,
           MaterialPageRoute(
